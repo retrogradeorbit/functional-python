@@ -1,0 +1,154 @@
+<html><head><meta charset="utf-8" /><title>Functional Python</title><meta content="What do functional languages teach us? How does learning them change the way we write Python" name="description" /><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" /><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport" /><link href="css/reveal.css" rel="stylesheet" /><link href="css/theme/black.css" id="theme" rel="stylesheet" /><link href="lib/css/zenburn.css" rel="stylesheet" /><script>
+var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script></head><body><div class="reveal"><div class="slides"><section><h1>Functional Python</h1><p>What do functional languages teach us? How does learning one change the way we write Python?</p><p><small>Created by <a>Crispin Wellington</a></small></p><aside class="notes"><ul><li>Who am I?</li><li>Work @ SignIQ.</li><li>Enjoy coding in GameJams.</li><li>Ideas of FP can be quite 'challenging'</li></ul></aside></section><section><h1>Empty Your Cup</h1><img src="./img/teacup.jpg" width="500px" /><p class="fragment fade-in">A university professor went to visit a famous Zen monk. While the monk quietly served tea, the professor talked about Zen. The monk poured the visitor's cup to the brim, and then kept pouring.</p><p class="fragment fade-in">The professor watched the overflowing cup until he could no longer restrain himself.</p><p class="fragment fade-in">“It's overfull! No more will go in!” the professor blurted.</p><p class="fragment fade-in">“You are like this cup,” the monk replied, “How can I show you Zen unless you first empty your cup.”</p></section><section style="margin-top: -50px"><h2>LISP</h2><p>Lisp is a <i>family</i> of languages recognised by their unique syntax, heavily influenced by lambda calculus and where source code is comprised of lists.</p><pre><code class="clojure">(println “Hello, world!”)
+(print “What is your name? ”)
+(let [name (read-line)]
+    (println “Hello, ” name “! My name is John McCarthy.”))
+</code></pre><p>Lisp was invented by <a>John McCarthy</a> in <i>1958</i>. It is a pioneering language that invented things like:</p><ul><li>tree data structures</li><li>dynamic typing</li><li>recursion</li><li>garbage collection</li><li>higher-order functions</li><li>homoiconicity</li><li>macros</li></ul><p><a>Clojure</a> is a modern Lisp variant written by <a>Rich Hickey</a> that produces compiled artifacts that run on the Java Virtual Machine, the Common Language Runtime or on Javascript engines, including in the browser.</p></section><section><h2>Characteristics of Clojure</h2><ul><li class="fragment grow">Functional</li><li class="fragment grow">Immutable</li><li>Lazy</li><li>Persistent</li><li>Dynamic Typing</li><li>Software Transactional Memory</li><li>Effortless Parallelism and Concurrency</li><li>Destructuring</li><li>Polymorphic</li><li>Strong Interoperability</li><li>Contracts (from Eiffel)</li><li>Powerful async constructs (from Go)</li><li>Logic programming (from Prolog)</li><li>Pattern matching (from ML)</li><li>Lisp macros</li></ul></section><section><section><h2>What is Functional Programming?</h2><p>Functional programming is programming in a style that favours (pure) functions over other constructs.</p></section><section><h2>What is a function?</h2><blockquote>In mathematics, a function is a relation between a set of inputs and a set of permissible outputs with the property that each input is related to exactly one output.<br />-- Wikipedia</blockquote><img src="function.svg" style="background-color: white" width="800px" /><aside class="notes"><ul><li>In this case, a value in Set A called x is mapped to its resultant value from Set B, f(x)</li><li>and the value from A, 'y' is mapped to its resultant f(y)</li><li>Set A and Set B could be anything.</li><li>Set A could be the Set of Real Numbers, and Set B also.</li><li>Or Set A could be the Set of possible strings, and set B the set of positive integers</li><li>Or Set A could be the Set of 2 dimensional vectors and set B could be the Set possible lists</li></ul></aside></section><section><h3>Example Functions</h3><p>A simple function that maps a number to its square:</p><p>In Haskell:</p><pre><code data-trim="">
+square :: Int -> Int
+square x = x * x
+</code></pre><p></p><p>In Clojure:</p><pre><code data-trim="">
+(defn square [x]
+  (* x x))
+</code></pre><p></p><p>In Python:</p><pre><code data-trim="">
+def square(x):
+    return x*x
+</code></pre></section><section><h3>Pure Functions</h3><p>A function is <i>pure</i> if both:</p><blockquote>The function always evaluates to the same output value given the same values for its input arguments.</blockquote><p>and:</p><blockquote>Evaluation of the result does not cause any semantically
+  observable side effect or output, such as mutation of mutable
+  objects or output to I/O devices.</blockquote><p></p><p>In functional programming we want to use <i>pure</i> functions. ie. They take <i>values</i>, only operate on those parameters, don't mutate state, and return a <i>value</i> to the caller</p></section><section><h3>Pure or impure?</h3><p><table style="color: white;"><thead><tr><th>Function Call</th><th>Pure or Impure?</th></tr></thead><tbody><tr><td class="fragment appear">+, -, /, *</td><td class="fragment appear">Pure</td></tr><tr><td class="fragment appear">len(mystring)</td><td class="fragment appear">Pure</td></tr><tr><td class="fragment appear">math.sqrt(mynum)</td><td class="fragment appear">Pure</td></tr><tr><td class="fragment appear">random()</td><td class="fragment appear">Impure</td></tr><tr><td class="fragment appear">sorted(mylist)</td><td class="fragment appear">Pure</td></tr><tr><td class="fragment appear">mylist.sort()</td><td class="fragment appear">Impure</td></tr><tr><td class="fragment appear">myfile.read()</td><td class="fragment appear">Impure</td></tr><tr><td class="fragment appear">datetime.today()</td><td class="fragment appear">Impure</td></tr></tbody></table></p></section></section><section><section><h2>Map</h2><p>Takes a function and a collection. Evaluates the function, passing in every item in the collection. Takes all the return values of those calls and returns them in a new collection.</p><pre><code class="python">map(f, coll)
+
+[f(x) for x in coll]
+
+{f(x):g(x) for x in coll}
+
+{f(k):g(v) for k,v in coll.items()}
+
+(f(x) for x in coll)
+</code></pre></section><section><h2>Example Map</h2><p>Imperative code like this:</p><pre><code class="python">output = []
+for word in ['this', 'is', 'a', 'list', 'of', 'words']:
+    output.append(len(word))
+print output
+
+output = {}
+for word in ['this', 'is', 'a', 'list', 'of', 'words']:
+    output[word] = len(word)
+print output
+</code></pre><p>Can be expressed functionally like this:</p><pre><code class="python">>>> map(len, ['this', 'is', 'a', 'list', 'of', 'words'])
+[4, 2, 1, 4, 2, 5]
+
+>>> [len(word) for word in ['this', 'is', 'a', 'list', 'of', 'words']]
+[4, 2, 1, 4, 2, 5]
+
+>>> {word:len(word) for word in ['this', 'is', 'a', 'list', 'of', 'words']}
+{'a': 1, 'this': 4, 'of': 2, 'is': 2, 'list': 4, 'words': 5}
+</code></pre></section></section><section><section><h2>Filter</h2><p>Takes a collection and returns a new collection containing only those items from the first that pass some test.</p><pre><code class="python">filter(pred, coll)
+
+[x for x in coll if x=='foo']
+
+[x for x in coll if pred(x)]
+
+{k:v for k,v in coll.items() if pred(k,v)}
+</code></pre></section><section><h2>Example Filter</h2><p>Imperative code like this:</p><pre><code class="python">output = []
+for word in ['this', 'is', 'a', 'list', 'of', 'words']:
+    if len(word)==4:
+        output.append(word)
+print output
+</code></pre><p>Can be expressed functionally like this:</p><pre><code class="python">>>> filter(lambda word: len(word)==4, ['this', 'is', 'a', 'list', 'of', 'words'])
+['this', 'list']
+
+>>> [word for word in ['this', 'is', 'a', 'list', 'of', 'words'] if len(word)==4]
+['this', 'list']
+</code></pre></section></section><section><section><h2>Reduce</h2><p>Consume all the items in a collection by passing them in turn to a function. That function gets passed the item being consumed, as well as the result of the last function call that was done on this collection. In this way a collection of items are fed through a function that reduces them to one output value. </p><p>Reduce optionally takes an initial argument that will be used in the first call to the function. If this is not specified, the first call is passed two items from the start of the collection.</p><pre><code class="python">def func(accumulator, element):
+    return ...
+
+reduce(func, coll)
+
+reduce(func, coll, initial_value)</code></pre></section><section><pre><code class="python">>>> def f(a,b):
+...   print "f called with:", a, b
+...   return a+b
+...
+>>> reduce(f, range(10))
+f called with: 0 1
+f called with: 1 2
+f called with: 3 3
+f called with: 6 4
+f called with: 10 5
+f called with: 15 6
+f called with: 21 7
+f called with: 28 8
+f called with: 36 9
+45
+</code></pre></section><section><pre><code class="python">>>> def reverser(a,b):
+...     print "reverser called with:", a, b
+...     return [b] + a
+...
+>>> reduce(reverser, [1, 4, 9, 16, 25], [])
+reverser called with: [] 1
+reverser called with: [1] 4
+reverser called with: [4, 1] 9
+reverser called with: [9, 4, 1] 16
+reverser called with: [16, 9, 4, 1] 25
+[25, 16, 9, 4, 1]
+</code></pre></section><section><pre><code class="python">>>> coll = [-20, 10, 100, -43, 35]
+>>> reduce(lambda a,b: a if a < b else b, coll)
+-43
+>>> reduce(lambda a,b: a if a > b else b, coll)
+100
+>>> reduce(min, coll)
+-43
+>>> reduce(max, coll)
+100
+>>> min(coll)
+-43
+>>> max(coll)
+100
+</code></pre></section></section><section><section><h2>Higer Order Functions</h2><p>A function is said to be a “higher order” function if it takes another function as one of its aguments, or returns a function as part of it's result, or both.</p></section><section><h2>Python Examples</h2><pre><code class="python">map(function, coll)</code></pre><pre><code class="python">filter(function, coll)</code></pre><pre><code class="python">reduce(function, coll)</code></pre></section><section><h2>Decorators</h2><p>Python decorators are functions. They get invoked and into them is passed the function that is to be decorated. They return a new function that is to replace the old one in the namespace.</p><pre><code class="python" style="max-height: inherit;">def debug(fn):
+    def new_func(*args, **kwargs):
+        result = fn(*args, **kwargs)
+        print "{} called with args: {} and kwargs: {} and returned: {}".format(fn.__name__, args, kwargs, result)
+        return result
+    return new_func
+
+@debug
+def solve_quadratic(a, b, c):
+    sqrt_b2_minus_4ac = math.sqrt(
+        b * b - 4 * a * c
+    )
+    return (
+        (- b + sqrt_b2_minus_4ac) / (2 * a),
+        (- b - sqrt_b2_minus_4ac) / (2 * a)
+    )
+
+result = solve_quadratic(10, 2, 4)
+</code></pre><p>running it looks like:</p><pre><code class="bash" style="max-height: inherit;">$ python test.py
+solve_quadratic called with args: (10, 2, -4) and kwargs: {} and returned: (0.5403124237432848, -0.7403124237432849)
+result = (0.5403124237432848, -0.7403124237432849)
+</code></pre></section></section><section><h1>lets code...</h1></section><section><h2>Immutability</h2><p>Q: If I can't change anything, how can I <i>do</i> anything? How can I model change at all?</p><p class="fragment appear">A: By building new things that are the same as the old things, but with slight differences</p><br /><p class="fragment appear">We call these immutable things <a>Values</a>.</p></section><section><section><h2>Values</h2><p>A particular magnitude, number or amount. A Precise meaning or significance.</p><br /><ul><li class="fragment appear">Values never change</li><li class="fragment appear">Values can be perceived and compared to other values</li><li class="fragment appear">Equality and comparability are the basis for logic</li></ul></section><section><h2>Values</h2><ul><li class="fragment appear">Immutible</li><li class="fragment appear">Semantically transparent<ul><li class="fragment appear">Don't <i>need</i> methods</li><li class="fragment appear">I can send you values without code and you are fine</li><li class="fragment appear">they are not operationally defined</li><li class="fragment appear">There can't be any code overhead that is required to understand meaning, equality or comparability.</li></ul></li><li class="fragment appear">Can be abstracted (collections)</li></ul></section><section><h2>What are values in Python?</h2><p class="fragment appear">Real numbers? <span class="fragment appear">yes</span></p><p class="fragment appear">None? <span class="fragment appear">yes</span></p><p class="fragment appear">Booleans? <span class="fragment appear">yes</span></p><p class="fragment appear">Tuple? <span class="fragment appear">yes</span></p><p class="fragment appear">Datetime? <span class="fragment appear">yes</span></p><p class="fragment appear">String? <span class="fragment appear">yes</span></p><p class="fragment appear">List? <span class="fragment appear">no</span></p><p class="fragment appear">Dictionary? <span class="fragment appear">no</span></p><p class="fragment appear">Set? <span class="fragment appear">no</span></p><p class="fragment appear">Generator instances? <span class="fragment appear">no</span></p><p class="fragment appear">Class instance? <span class="fragment appear">depends (usually no)</span></p><p class="fragment appear">Class? <span class="fragment appear">no</span></p><p class="fragment appear">Module? <span class="fragment appear">no</span></p></section></section><section><section><h2>The Many Benefits of Values</h2></section><section><h2>Values aggregate</h2><ul><li class="fragment appear">Immutable collections of values are values</li><li class="fragment appear">All benefits apply in compositions</li></ul></section><section><h2>Values can be Freely Shared</h2><ul><li class="fragment appear">Sharing is aliasing</li><li class="fragment appear">Safe</li><li class="fragment appear">Incremental change is cheap (persistent structures)</li></ul></section><section><h2>Values are Easy to Fabricate</h2><ul><li class="fragment appear">Anything can create them easily</li><li class="fragment appear">Easy for tests to create</li><li class="fragment appear">Easy to dry run or simulate</li></ul></section><section><h2>Values are Reproducible</h2><ul><li class="fragment appear">Stable: operations are reproducible</li><li class="fragment appear">Testing</li><li class="fragment appear">Debugging: reproduce problems without state</li></ul></section><section><h2>Values are Language Independent</h2><ul><li class="fragment appear">Any language can create values</li><li class="fragment appear">Any language can receive values</li></ul></section><section><h2>Values thwart imperativeness</h2><ul><li class="fragment appear">Refuse to help you program imperatively</li><li class="fragment appear">This is a feature, not a limitation</li></ul></section><section><h2>Values are generic</h2><ul><li class="fragment appear">Representations of basic values in any language</li><li class="fragment appear">Very small number of basic abstractions (less than 10)</li></ul></section><section><h2>Values make great interfaces</h2><p>If your code is based on values you can:</p><ul><li class="fragment appear">Move it</li><li class="fragment appear">Port it</li><li class="fragment appear">Enqueue it</li></ul></section></section><section><section><h2>Programming with Values</h2></section><section><h2>Sending Values</h2><ul><li class="fragment appear">Reference is all you need to pass</li><li class="fragment appear">Cheap</li><li class="fragment appear">Safe and worry free</li></ul></section><section><h2>Perceiving Values</h2><ul><li class="fragment appear">A reference is perception</li><li class="fragment appear">Snapshots</li></ul></section><section><h2>Remembering Values</h2><ul><li class="fragment appear">Aliasing is remembering</li><li class="fragment appear">Forgetting is garbage collection</li></ul></section><section><h2>Co-ordinating Values</h2><ul><li class="fragment appear">No need for locks</li><li class="fragment appear">No need for transactions</li></ul></section><section><h2>Locating Values</h2><ul><li class="fragment appear">Only one copy needed in RAM</li><li class="fragment appear">Memoizable</li><li class="fragment appear">Cachable</li><li class="fragment appear">Content Delivery Networks</li><li class="fragment appear">Distributable</li></ul></section></section><section><h1>lets code...</h1></section><section><h2>The Future</h2><blockquote class="fragment appear">If you could design a language from scatch that didn’t need a GIL you would probably design a language without mutable objects. Or you’d limit the mutability to a small number of specific object types rather than making pretty much everything mutable, from modules to classes to instances to dictionaries to lists.<br />-- <a>Guido van Rossum </a>(Europython 2015 keynote)</blockquote><blockquote class="fragment appear">That would not be Python<br />-- <a>Someone in the Audience </a>[Shouting]</blockquote><blockquote class="fragment appear">You’re taking the words right out of my mouth<br />-- <a>Guido van Rossum</a></blockquote></section><section><h2>The Future</h2><blockquote class="fragment appear">I don't know what the default programming language will be in 2020, but I garauntee that immutibility will be the default in that language.<br />-- Stuart Halloway</blockquote></section><section><h2>A Final Thought</h2><blockquote class="fragment appear">You cannot step in the same river twice, for you are not the same person and it is not the same river.<br />-- <a>Heraclitus of Ephesus </a>(c. 535 - c. 475 BCE)</blockquote><br /><blockquote class="fragment appear">We love this idea of objects, like there’s this thing that changes. There’s no river. There’s water there at one point-in-time. And another point-in-time, there’s other water there. River... it’s all in here [points at head]<br />-- <a>Rich Hickey</a></blockquote></section><section><h3>Functional vs Imperative</h3><table><thead><tr><th>Imperative</th><th>Functional</th></tr></thead><tbody><tr><td>Machine-like</td><td>Mathematical</td></tr><tr><td>Single thread performance</td><td>Faster</td><td>Slower</td></tr><tr><td>Smaller Memory Use</td><td>Larger Memory use</td></tr></tbody></table></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.js"></script><script>	// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+                                keyboard: true,
+
+                                width: 1600,
+                                height: 960,
+                                minScale: 0.1,
+                                maxScale: 1.0,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});</script></body></html>

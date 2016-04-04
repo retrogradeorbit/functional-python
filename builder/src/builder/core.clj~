@@ -1,0 +1,506 @@
+(ns builder.core
+  (:require [hiccup.core :refer [html]])
+  (:gen-class))
+
+(declare page-head)
+(declare page-source)
+
+(defn -main
+  "I don't do a whole lot ... yet."
+  [& args]
+  (spit "reveal/reveal.js-3.2.0/presentation.html"
+   (html [:html page-head page-source])))
+
+;;
+;; source
+;;
+(def page-head
+  [:head
+   [:meta {:charset "utf-8"}]
+   [:title "Functional Python"]
+   [:meta {:name "description" :content "What do functional languages teach us? How does learning them change the way we write Python"}]
+   [:meta {:name "apple-mobile-web-app-capable" :content "yes"}]
+   [:meta {:name "apple-mobile-web-app-status-bar-style" :content "black-translucent"}]
+   [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"}]
+   [:link {:rel "stylesheet" :href "css/reveal.css"}]
+   [:link#theme {:rel "stylesheet" :href "css/theme/black.css"}]
+   [:link {:rel "stylesheet" :href "lib/css/zenburn.css"}]
+   [:script
+    "
+var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );"]])
+
+
+(def page-source
+  [:body
+   [:div.reveal
+    [:div.slides
+     [:section
+      [:h1 "Functional Python"]
+      [:p "What do functional languages teach us? How does learning one change the way we write Python?"]
+      [:p [:small "Created by " [:a "Crispin Wellington"]]]]
+
+     [:section
+      [:h1 "Empty Your Cup"]
+      [:img {:src "http://www.skipprichard.com/wp-content/uploads/2012/05/teacup-583x437.jpg"
+             :width "500px"}]
+      [:p.fragment.fade-in "A university professor went to visit a famous Zen master. While the master quietly served tea, the professor talked about Zen. The master poured the visitor's cup to the brim, and then kept pouring."]
+      [:p.fragment.fade-in "The professor watched the overflowing cup until he could no longer restrain himself."]
+      [:p.fragment.fade-in "\"It's overfull! No more will go in!\" the professor blurted."]
+      [:p.fragment.fade-in "\"You are like this cup,\" the master replied, \"How can I show you Zen unless you first empty your cup.\""]
+      ]
+
+     (comment
+       [:section
+        [:blockquote "\"Lisp is worth learning for the profound enlightenment experience you will have when you finally get it; that experience will make you a better programmer for the rest of your days, even if you never actually use Lisp itself a lot.\"" [:br] "-- Eric S Raymond"]
+        ]
+
+       [:section
+        [:h2 "So tell me, are you experienced?"]
+        [:ul
+         [:li "What is this" [:i "experience"] "he speaks of?"]
+         [:li.fragment.fade-in "How has learning Lisp changed my Python programming"]
+         [:li.fragment.fade-in "How can we improve Python to help us write functional programmes?"]]])
+
+     [:section {:style "margin-top: -50px"}
+      [:h2 "LISP"]
+      [:p "Lisp is a " [:i "family"] " of languages recognised by their unique syntax, heavily influenced by lambda calculus and where source code is comprised of lists."]
+      [:pre [:code.clojure
+             "(println \"Hello, world!\")
+(print \"What is your name? \")
+(let [name (read-line)]
+    (println \"Hello, \" name \"! My name is John McCarthy.\"))
+"]]
+      [:p "Lisp was invented by " [:a "John McCarthy"] " in " [:i "1958"] ". It is a pioneering language that invented things like:"]
+      [:ul
+       [:li "tree data structures"]
+       [:li "dynamic typing"]
+       [:li "recursion"]
+       [:li "garbage collection"]
+       [:li "higher-order functions"]
+       [:li "homoiconicity"]
+       [:li "macros"]]
+      [:p [:a "Clojure"] " is a modern Lisp variant written by " [:a "Rich Hickey"] " that produces compiled artifacts that run on the Java Virtual Machine, the Common Language Runtime or on Javascript engines, including in the browser."]]
+
+     [:section
+      [:h2 "Characteristics of Clojure"]
+      [:ul
+       [:li.fragment.grow "Functional"]
+       [:li.fragment.grow "Immutable"]
+       [:li "Persistent"]
+       [:li "Dynamic Typing"]
+       [:li "Software Transactional Memory"]
+       [:li "Effortless Parallelism and Concurrency"]
+       [:li "Destructuring"]
+       [:li "Polymorphic"]
+       [:li "Strong Interoperability"]
+       [:li "Contracts (from Eiffel)"]
+       [:li "Powerful async constructs (from Go)"]
+       [:li "Logic programming (from Prolog)"]
+       [:li "Pattern matching (from ML)"]
+       [:li "Lisp macros"]]]
+
+     [:section
+      [:section
+       [:h2 "What is Functional Programming?"]
+       [:p "Functional programming is programming in a style that favours (pure) functions over other constructs."]]
+
+      [:section
+       [:h2 "What is a function?"]
+       [:blockquote "In mathematics, a function is a relation between a set of inputs and a set of permissible outputs with the property that each input is related to exactly one output."
+        [:br] "-- Wikipedia"]
+       [:img {:src "function.svg" :width "800px" :style "background-color: white" }]
+       [:aside.notes
+        [:ul
+         [:li "In this case, a value in Set A called x is mapped to its resultant value from Set B, f(x)"]
+         [:li "and the value from A, 'y' is mapped to its resultant f(y)"]
+         [:li "Set A and Set B could be anything."]
+         [:li "Set A could be the Set of Real Numbers, and Set B also."]
+         [:li "Or Set A could be the Set of possible strings, and set B the set of positive integers"]
+         [:li "Or Set A could be the Set of 2 dimensional vectors and set B could be the Set possible lists"]]]]
+
+      [:section
+       [:h3 "Example Functions"]
+       [:p "A simple function that maps a number to its square:"]
+       [:p "In Haskell:"]
+       [:pre [:code {:data-trim ""}
+              "
+square :: Int -> Int
+square x = x * x
+"]]
+       [:p]
+       [:p "In Clojure:"]
+       [:pre [:code {:data-trim ""}
+              "
+(defn square [x]
+  (* x x))
+"]]
+
+       [:p]
+       [:p "In Python:"]
+       [:pre [:code {:data-trim ""}
+              "
+def square(x):
+    return x*x
+"]]]
+
+      [:section
+       [:h3 "Pure Functions"]
+       [:p "A function is " [:i "pure"] " if both:"]
+       [:blockquote #_ {:style "font-size: 26"} "The function always evaluates to the same output value given the same values for its input arguments."
+        #_ (The function result value cannot
+                depend on any hidden information or state that may change as program
+                execution proceeds or between different executions of the program,
+                nor can it depend on any external input from I/O devices.)
+        ]
+       [:p "and:"]
+       [:blockquote #_ {:style "font-size: 26"} "Evaluation of the result does not cause any semantically
+  observable side effect or output, such as mutation of mutable
+  objects or output to I/O devices."]
+       [:p]
+       [:p "In functional programming we want to use " [:i "pure"]
+        " functions. ie. They take " [:i "values"]
+        ", only operate on those parameters, don't mutate state, and return a"
+        " value to the caller"]]
+
+      [:section
+       [:h3 "Pure or impure?"]
+       [:p
+        [:table
+         [:thead [:tr [:th "Function Call"] [:th "Pure or Impure?"]]]
+         [:tbody
+          [:tr [:td "len(mystring)"] [:td.fragment.appear "Pure"]]
+          [:tr [:td.fragment.appear "math.sqrt(mynum)"] [:td.fragment.appear "Pure"]]
+          [:tr [:td.fragment.appear "random()"] [:td.fragment.appear "Impure"]]
+          [:tr [:td.fragment.appear "sorted(mylist)"] [:td.fragment.appear "Pure"]]
+          [:tr [:td.fragment.appear "mylist.sort()"] [:td.fragment.appear "Impure"]]
+          [:tr [:td.fragment.appear "myfile.read()"] [:td.fragment.appear "Impure"]]
+          [:tr [:td.fragment.appear "datetime.today()"] [:td.fragment.appear "Impure"]]]]]]]
+
+     [:section
+      [:section
+       [:h2 "Map"]
+       [:p "Takes a function and a collection. Evaluates the function, passing in every item in the collection. Takes all the return values of those calls and returns them in a new collection."]
+       [:pre [:code.python
+              "map(f, coll)
+
+[f(x) for x in coll]
+
+{f(x):g(x) for x in coll}
+
+{f(k):g(v) for k,v in coll.items()}
+
+(f(x) for x in coll)
+"]]]
+
+      [:section
+       [:h2 "Example Map"]
+       [:p "Imperative code like this:"]
+       [:pre [:code.python
+              "output = []
+for word in ['this', 'is', 'a', 'list', 'of', 'words']:
+    output.append(len(word))
+print output
+
+output = {}
+for word in ['this', 'is', 'a', 'list', 'of', 'words']:
+    output[word] = len(word)
+print output
+"
+              ]]
+       [:p "Can be expressed functionally like this:"]
+       [:pre [:code.python
+              ">>> map(len, ['this', 'is', 'a', 'list', 'of', 'words'])
+[4, 2, 1, 4, 2, 5]
+
+>>> [len(word) for word in ['this', 'is', 'a', 'list', 'of', 'words']]
+[4, 2, 1, 4, 2, 5]
+
+>>> {word:len(word) for word in ['this', 'is', 'a', 'list', 'of', 'words']}
+{'a': 1, 'this': 4, 'of': 2, 'is': 2, 'list': 4, 'words': 5}
+"]]]]
+
+     [:section
+      [:section
+       [:h2 "Filter"]
+       [:p "Takes a collection and returns a new collection containing only those items from the first that pass some test."]
+       [:pre [:code.python
+              "filter(pred, coll)
+
+[x for x in coll if x==\"foo\"]
+
+[x for x in coll if pred(x)]
+
+{k:v for k,v in coll.items() if pred(k,v)}
+"]]]
+
+      [:section
+       [:h2 "Example Filter"]
+       [:p "Imperative code like this:"]
+       [:pre [:code.python
+              "output = []
+for word in ['this', 'is', 'a', 'list', 'of', 'words']:
+    if len(word)==4:
+        output.append(word)
+print output
+"
+              ]]
+       [:p "Can be expressed functionally like this:"]
+       [:pre [:code.python
+              ">>> filter(lambda word: len(word)==4, ['this', 'is', 'a', 'list', 'of', 'words'])
+['this', 'list']
+
+>>> [word for word in ['this', 'is', 'a', 'list', 'of', 'words'] if len(word)==4]
+['this', 'list']
+"]]]]
+
+     [:section
+      [:section
+       [:h2 "Reduce"]
+       [:p "Consume all the items in a collection by passing them in turn to a function. That function "
+        "gets passed the item being consumed, as well as the result of the last function call that was done on this collection."
+        "In this way a collection of items are fed through a function that reduces them to one output value. "]
+       [:p "Reduce optionally takes an initial argument that will be used in the first call to the function."
+        " If this is not specified, the first call is passed two items from the start of the collection."]
+       [:pre [:code.python
+              "def func(accumulator, element):
+    return ...
+
+reduce(func, coll)
+
+reduce(func, coll, initial_value)"]]
+       ]
+
+      [:section
+
+       [:pre [:code.python
+              ">>> def f(a,b):
+...   print \"f called with:\", a, b
+...   return a+b
+...
+>>> reduce(f, range(10))
+f called with: 0 1
+f called with: 1 2
+f called with: 3 3
+f called with: 6 4
+f called with: 10 5
+f called with: 15 6
+f called with: 21 7
+f called with: 28 8
+f called with: 36 9
+45
+"
+              ]]]
+
+      [:section
+       [:pre [:code.python
+              ">>> def reverser(a,b):
+...     print \"reverser called with:\", a, b
+...     return [b] + a
+...
+>>> reduce(reverser, [1, 4, 9, 16, 25], [])
+reverser called with: [] 1
+reverser called with: [1] 4
+reverser called with: [4, 1] 9
+reverser called with: [9, 4, 1] 16
+reverser called with: [16, 9, 4, 1] 25
+[25, 16, 9, 4, 1]
+"
+
+              ]]]
+
+      [:section
+       [:pre [:code.python
+              ">>> coll = [-20, 10, 100, -43, 35]
+>>> reduce(lambda a,b: a if a < b else b, coll)
+-43
+>>> reduce(lambda a,b: a if a > b else b, coll)
+100
+>>> reduce(min, coll)
+-43
+>>> reduce(max, coll)
+100
+>>> min(coll)
+-43
+>>> max(coll)
+100
+"
+
+
+              ]]]]
+
+     [:section
+      [:h2 "Immutability"]
+      [:p "Q: If I can't change anything, how can I " [:i "do"] " anything? "
+       "How can I model change at all?"]
+      [:p.fragment.appear "A: By building new things that are the same as the old things, but with slight differences"]
+      [:br]
+      [:p.fragment.appear "We call these immutable things " [:a "Values"] "."]
+      ]
+
+     [:section
+      [:section
+       [:h2 "Values"]
+       [:p "A particular magnitude, number or amount. "
+        "A Precise meaning or significance."]
+       [:br]
+       [:ul
+        [:li.fragment.appear "Values never change"]
+        [:li.fragment.appear "Values can be perceived and compared to other values"]
+        [:li.fragment.appear "Equality and comparability are the basis for logic"]]]
+
+      [:section
+       [:h2 "Values"]
+       [:ul
+        [:li.fragment.appear "Immutible"]
+        [:li.fragment.appear "Semantically transparent"
+         [:ul
+          [:li.fragment.appear "Don't " [:i "need"] " methods"]
+          [:li.fragment.appear "I can send you values without code and you are fine"]
+          [:li.fragment.appear "they are not operationally defined"]
+          [:li.fragment.appear "There can't be any code overhead that is required to understand meaning, equality or comparability."]]
+         ]
+        [:li.fragment.appear "Can be abstracted (collections)"]]
+       ]
+
+      [:section
+       [:h2 "What are values in Python?"]
+       [:p.fragment.appear "Real numbers? " [:span.fragment.appear "yes"]]
+       [:p.fragment.appear "None? " [:span.fragment.appear "yes"]]
+       [:p.fragment.appear "Booleans? " [:span.fragment.appear "yes"]]
+       [:p.fragment.appear "Tuple? " [:span.fragment.appear "yes"]]
+       [:p.fragment.appear "Datetime? " [:span.fragment.appear "yes"]]
+       [:p.fragment.appear "String? " [:span.fragment.appear "yes"]]
+       [:p.fragment.appear "List? " [:span.fragment.appear "no"]]
+       [:p.fragment.appear "Dictionary? " [:span.fragment.appear "no"]]
+       [:p.fragment.appear "Set? " [:span.fragment.appear "no"]]
+       [:p.fragment.appear "Generator instances? " [:span.fragment.appear "no"]]
+       [:p.fragment.appear "Class instance? " [:span.fragment.appear "depends (usually no)"]]
+       [:p.fragment.appear "Class? " [:span.fragment.appear "no"]]
+       [:p.fragment.appear "Module? " [:span.fragment.appear "no"]]
+
+       ]]
+
+     [:section
+      [:section
+       [:h2 "The Many Benefits of Values"]]
+
+      [:section
+       [:h2 "Values can be Freely Shared"]]
+
+      [:section
+       [:h2 "Values are Easy to Fabricate"]]
+
+      [:section
+       [:h2 "Values are Reproducible"]]
+
+      [:section
+       [:h2 "Values are Language Independent"]]
+
+      [:section
+       [:h2 "Values thwart imperativeness"]]
+
+      [:section
+       [:h2 "Values are generic"]]
+
+      [:section
+       [:h2 "Values make great interfaces"]]
+
+      [:section
+       [:h2 "Values aggregate"]]]
+
+     [:section
+      [:section
+       [:h2 "Programming with Values"]]
+
+      [:section
+       [:h2 "Sending Values"]]
+
+      [:section
+       [:h2 "Perceiving Values"]]
+
+      [:section
+       [:h2 "Remembering Values"]]
+
+      [:section
+       [:h2 "Co-ordinating Values"]]
+
+      [:section
+       [:h2 "Locating Values"]]]
+
+     [:section
+      [:h1 "lets code..."]
+      ]
+
+     [:section
+      [:h2 "The Future"]
+      [:blockquote.fragment.appear "If you could design a language from scatch that didn't need a GIL you would probably design a language without mutable objects. Or you'd ... limit the mutability to ... a small number of specific object types rather than making pretty much everything mutable, from modules to classes to instances to dictionaries to lists."
+       [:br] "-- Guido van Rossum (Europython 2015 keynote)"]
+
+      ;; https://www.youtube.com/watch?v=bp3mCgrdMxU#t=34m30s
+
+      [:blockquote.fragment.appear "That would not be Python"
+       [:br] "-- Someone in the Audience [Shouting]"]
+
+      [:blockquote.fragment.appear "You're taking the words right out of my mouth"
+       [:br] "-- Guido van Rossum"]]
+
+     [:section
+      [:h2 "The Future"]
+      [:blockquote.fragment.appear "I don't know what the default programming language will be in 2020, but I garauntee that immutibility will be the default in that language."
+       [:br] "-- Stuart Halloway"]]
+
+
+
+
+
+     [:section
+      [:h3 "Functional vs Imperative"]
+      [:table [:thead [:tr [:th "Imperative"] [:th "Functional"]]]
+       [:tbody
+        [:tr [:td "Machine-like"] [:td "Mathematical"]]
+        [:tr [:td "Single thread performance"] [:td "Faster"] [:td "Slower"]]
+        [:tr [:td "Smaller Memory Use"] [:td "Larger Memory use"]]]]
+      ]
+
+
+
+
+
+
+
+     ]
+    ]
+
+   [:script {:src "lib/js/head.min.js"}]
+   [:script {:src "js/reveal.js"}]
+   [:script "	// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+                                keyboard: true,
+
+                                width: 1600,
+                                height: 960,
+                                minScale: 0.1,
+                                maxScale: 1.0,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});"]
+   ])

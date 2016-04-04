@@ -1,0 +1,91 @@
+<html><head><meta charset="utf-8" /><title>Functional Python</title><meta content="What do functional languages teach us? How does learning them change the way we write Python" name="description" /><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" /><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport" /><link href="css/reveal.css" rel="stylesheet" /><link href="css/theme/black.css" id="theme" rel="stylesheet" /><link href="lib/css/zenburn.css" rel="stylesheet" /><script>
+var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script></head><body><div class="reveal"><div class="slides"><section><h1>Functional Python</h1><p>What do functional languages teach us? How does learning one change the way we write Python?</p><p><small>Created by<a>Crispin Wellington</a></small></p></section><section><blockquote>"Lisp is worth learning for the profound enlightenment experience you will have when you finally get it; that experience will make you a better programmer for the rest of your days, even if you never actually use Lisp itself a lot."<br />-- Eric S Raymond</blockquote></section><section><h2>So tell me, are you experienced?</h2><ul><li>What is this<i>experience</i>he speaks of?</li><li class="fragment fade-in">How has learning Lisp changed my Python programming</li><li class="fragment fade-in">How can we improve Python to help us write functional programmes?</li></ul></section><section style="margin-top: -130px"><h2>LISP</h2><p>Lisp is a<i>family</i>of languages recognised by their unique syntax, heavily influenced by lambda calculus and where source code is comprised of lists.</p><pre><code class="clojure">(println "Hello, world!")
+(print "What is your name? ")
+(let [name (read-line)]
+    (println "Hello, " name "! My name is John McCarthy))
+</code></pre><p>Lisp was invented by <a>John McCarthy</a>in<i>1958</i>. It is a pioneering language that invented things like:</p><ul><li>tree data structures</li><li>dynamic typing</li><li>recursion</li><li>garbage collection</li><li>higher-order functions</li><li>homoiconicity</li><li>macros</li></ul><p><a>Clojure</a>is a modern Lisp variant written by<a>Rich Hickey</a>that produces compiled artifacts that run on the Java Virtual Machine, the Common Language Runtime or on Javascript engines, including in the browser.</p></section><section><h2>Characteristics of Clojure</h2><ul><li class="fragment grow">Functional</li><li class="fragment grow">Immutable</li><li>Persistence</li><li>Effortless Parallelism and Concurrency</li><li>Abstract</li><li>Polymorphic</li><li>Strong Interoperability</li><li>Macros</li></ul></section><section><section><h2>What is Functional Programming?</h2><p>Functional programming is programming in a style that favours (pure) functions over other constructs.</p></section><section><h2>What is a function?</h2><blockquote>In mathematics, a function is a relation between a set of inputs and a set of permissible outputs with the property that each input is related to exactly one output.<br />-- Wikipedia</blockquote><img src="function.svg" style="background-color: white" width="500px" /><aside class="notes"><ul><li>In this case, a value in Set A called x is mapped to its resultant value from Set B, f(x)</li><li>and the value from A, 'y' is mapped to its resultant f(y)</li><li>Set A and Set B could be anything.</li><li>Set A could be the Set of Real Numbers, and Set B also.</li><li>Or Set A could be the Set of possible strings, and set B the set of positive integers</li><li>Or Set A could be the Set of 2 dimensional vectors and set B could be the Set possible lists</li></ul></aside></section><section><h3>Example Functions</h3><p>A simple function that maps a number to its square:</p><p>In Haskell:</p><pre><code data-trim="">
+square :: Int -> Int
+square x = x * x
+</code></pre><p></p><p>In Clojure:</p><pre><code data-trim="">
+(defn square [x]
+  (* x x))
+</code></pre><p></p><p>In Python:</p><pre><code data-trim="">
+def square(x):
+    return x*x
+</code></pre></section><section style="margin-top: -100px"><h3>Pure Functions</h3><p>A function is <i>pure</i> if both:</p><blockquote>The function always evaluates to the same output value given the same values for its input arguments.</blockquote><p>and:</p><blockquote>Evaluation of the result does not cause any semantically
+  observable side effect or output, such as mutation of mutable
+  objects or output to I/O devices.</blockquote><p></p><p>In functional programming we want to use <i>pure</i> functions. ie. They take parameters, <i>only</i> operate on those parameters, don't mutate state, and return a value to the caller</p></section><section><h3>Pure or impure?</h3><p><table><thead><tr><th>Function Call</th><th>Pure or Impure?</th></tr></thead><tbody><tr><td>len(mystring)</td><td class="fragment appear">Pure</td></tr><tr><td class="fragment appear">math.sqrt(mynum)</td><td class="fragment appear">Pure</td></tr><tr><td class="fragment appear">random()</td><td class="fragment appear">Impure</td></tr><tr><td class="fragment appear">sorted(mylist)</td><td class="fragment appear">Pure</td></tr><tr><td class="fragment appear">myfile.read()</td><td class="fragment appear">Impure</td></tr><tr><td class="fragment appear">datetime.today()</td><td class="fragment appear">Impure</td></tr></tbody></table></p></section></section><section><h2>Map</h2><p>Takes a function and a collection. Evaluates the function, passing in every item in the collection. Takes all the return values of those calls and returns them in a new collection.</p><pre><code class="python">[f(x) for x in coll]
+
+{f(x):g(x) for x in coll}
+
+{f(k):g(v) for k,v in coll.items()}
+
+(f(x) for x in coll)
+</code></pre></section><section><h2>Filter</h2><p>Takes a collection and returns a new collection containing only those items from the first that pass some test.</p><pre><code class="python">[x for x in coll if x=="foo"]
+
+[x for x in coll if h(x)]
+
+{k:v for k,v in coll.items() if h(k,v)}
+</code></pre></section><section><h2>Reduce</h2><p>Consume all the items in a collection by passing them in turn to a function. That function gets passed the item being consumed, as well as the result of the last function call that was done on this collection.In this way a collection of items are fed through a function that reduces them to one output value. </p><p>Reduce optionally takes an initial argument that will be used in the first call to the function. If this is not specified, the first call is passed two items from the start of the collection.</p></section><section><pre><code class="python">>>> def f(a,b):
+...   print "f called with:", a, b
+...   return a+b
+...
+>>> reduce(f, range(10))
+f called with: 0 1
+f called with: 1 2
+f called with: 3 3
+f called with: 6 4
+f called with: 10 5
+f called with: 15 6
+f called with: 21 7
+f called with: 28 8
+f called with: 36 9
+45
+</code></pre></section><section><pre><code class="python">>>> def reverser(a,b):
+...     print "reverser called with:", a, b
+...     return [b] + a
+...
+>>> reduce(reverser, [1, 4, 9, 16, 25], [])
+reverser called with: [] 1
+reverser called with: [1] 4
+reverser called with: [4, 1] 9
+reverser called with: [9, 4, 1] 16
+reverser called with: [16, 9, 4, 1] 25
+[25, 16, 9, 4, 1]
+</code></pre></section><section><pre><code class="python">>>> coll = [-20, 10, 100, -43, 35]
+>>> reduce(lambda a,b: a if a < b else b, coll)
+-43
+>>> reduce(lambda a,b: a if a > b else b, coll)
+100
+>>> reduce(min, coll)
+-43
+>>> reduce(max, coll)
+100
+>>> min(coll)
+-43
+>>> max(coll)
+100
+</code></pre></section><section><h2>Immutability</h2><p>Q: If I can't change anything, how can I <i>do</i> anything? How can I model change at all?</p><p class="appear">A: By building new things that are the same as the old things, but slightly different</p></section><section><h2></h2></section><section><h3>Functional vs Imperative</h3><table><thead><tr><th>Imperative</th><th>Functional</th></tr></thead><tbody><tr><td>Machine-like</td><td>Mathematical</td></tr><tr><td>Single thread performance</td><td>Faster</td><td>Slower</td></tr><tr><td>Smaller Memory Use</td><td>Larger Memory use</td></tr></tbody></table></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.js"></script><script>	// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});</script></body></html>
