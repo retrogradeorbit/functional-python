@@ -613,7 +613,8 @@ result = (0.5403124237432848, -0.7403124237432849)
        [:h2 "Co-ordinating Values"]
        [:ul
         [:li.fragment.appear "No need for locks"]
-        [:li.fragment.appear "No need for transactions"]]
+        [:li.fragment.appear "No need for transactions"]
+        [:li.fragment.appear "Concurrency FTW!"]]
        [:aside.notes
         [:ul
          [:li "Objects? Locks. Transactions."]
@@ -638,9 +639,9 @@ result = (0.5403124237432848, -0.7403124237432849)
      [:section
       [:h1 "Some useful libraries"]
       [:ul
-       [:li "Python functools" [:a "Python built in"]]
-       [:li "PyToolz" [:a "toolz.readthedocs.org"]]
-       [:li "Pyrsistent" [:a "pyrsistent.readthedocs.org"]]]
+       [:li "Python functools " [:a "Python built in"]]
+       [:li "PyToolz " [:a "toolz.readthedocs.org"]]
+       [:li "Pyrsistent " [:a "pyrsistent.readthedocs.org"]]]
       ]
 
      [:section
