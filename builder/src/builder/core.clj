@@ -115,13 +115,13 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );"]])
      [:section
       [:section
        [:h2 "What is Functional Programming?"]
-       [:p "Functional programming is programming in a style that favours (pure) functions over other constructs."]]
+       [:p.fragment.appear "Functional programming is programming in a style that favours (pure) functions over other constructs."]]
 
       [:section
        [:h2 "What is a function?"]
-       [:blockquote "In mathematics, a function is a relation between a set of inputs and a set of permissible outputs with the property that each input is related to exactly one output."
+       [:blockquote.fragment.appear "In mathematics, a function is a relation between a set of inputs and a set of permissible outputs with the property that each input is related to exactly one output."
         [:br] "-- Wikipedia"]
-       [:img {:src "function.svg" :width "800px" :style "background-color: white" }]
+       [:img.fragment.appear {:src "function.svg" :width "800px" :style "background-color: white" }]
        [:aside.notes
         [:ul
          [:li "In this case, a value in Set A called x is mapped to its resultant value from Set B, f(x)"]
@@ -166,11 +166,11 @@ def square(x):
                 nor can it depend on any external input from I/O devices.)
         ]
        [:p "and:"]
-       [:blockquote #_ {:style "font-size: 26"} "Evaluation of the result does not cause any semantically
+       [:blockquote.fragment.appear #_ {:style "font-size: 26"} "Evaluation of the result does not cause any semantically
   observable side effect or output, such as mutation of mutable
   objects or output to I/O devices."]
        [:p]
-       [:p "In functional programming we want to use " [:i "pure"]
+       [:p.fragment.appear "In functional programming we want to use " [:i "pure"]
         " functions. ie. They take " [:i "values"]
         ", only operate on those parameters, don't mutate state, and return a "
         [:i "value"]
@@ -189,7 +189,9 @@ def square(x):
           [:tr [:td.fragment.appear "sorted(mylist)"] [:td.fragment.appear "Pure"]]
           [:tr [:td.fragment.appear "mylist.sort()"] [:td.fragment.appear "Impure"]]
           [:tr [:td.fragment.appear "myfile.read()"] [:td.fragment.appear "Impure"]]
-          [:tr [:td.fragment.appear "datetime.today()"] [:td.fragment.appear "Impure"]]]]]]]
+          [:tr [:td.fragment.appear "datetime.today()"] [:td.fragment.appear "Impure"]]
+          [:tr [:td.fragment.appear "mylist.append(myval)"] [:td.fragment.appear "Impure"]]
+          [:tr [:td.fragment.appear "list1 + list2"] [:td.fragment.appear "Pure"]]]]]]]
 
      [:section
       [:section
@@ -272,7 +274,7 @@ print output
       [:section
        [:h2 "Reduce"]
        [:p "Consume all the items in a collection by passing them in turn to a function. That function "
-        "gets passed the item being consumed, as well as the result of the last function call that was done on this collection. "
+        "gets passed the item being consumed, as well as the result of the last function call performed by reduce. "
         "In this way a collection of items are fed through a function that reduces them to one output value. "]
        [:p "Reduce optionally takes an initial argument that will be used in the first call to the function."
         " If this is not specified, the first call is passed two items from the start of the collection."]
@@ -283,6 +285,8 @@ print output
 reduce(func, coll)
 
 reduce(func, coll, initial_value)"]]
+       [:aside.notes
+        [:p "fold. foldl. foldr"]]
        ]
 
       [:section
@@ -346,20 +350,23 @@ reverser called with: [16, 9, 4, 1] 25
      [:section
       [:section
        [:h2 "Higer Order Functions"]
-       [:p "A function is said to be a “higher order” function if it takes another function as one of its aguments, or returns a function as part of it's result, or both."]]
+       [:p "A function is said to be of a “higher order” if it takes another function as one of its aguments, or returns a function as part of it's result, or both."]]
 
       [:section
        [:h2 "Python Examples"]
        [:pre [:code.python
-              "map(function, coll)"]]
-       [:pre [:code.python
-              "filter(function, coll)"]]
-       [:pre [:code.python
-              "reduce(function, coll)"]]]
+              "map(function, coll)
+
+filter(function, coll)
+
+reduce(function, coll)
+"]]
+
+       ]
 
       [:section
        [:h2 "Decorators"]
-       [:p "Python decorators are functions. They get invoked and into them is passed the function that is to be decorated. They return a new function that is to replace the old one in the namespace."]
+       [:p "Python decorators are functions. They get invoked during compilation and into them is passed the function that is to be decorated. They return a new function that is to replace the old one in the namespace."]
 
        [:pre
         [:code.python {:style "max-height: inherit;"}
@@ -388,7 +395,10 @@ result = solve_quadratic(10, 2, 4)
          "$ python test.py
 solve_quadratic called with args: (10, 2, -4) and kwargs: {} and returned: (0.5403124237432848, -0.7403124237432849)
 result = (0.5403124237432848, -0.7403124237432849)
-"]]]]
+"]]
+       [:aside.notes
+        [:p "talk a bit about function composition?"]]
+       ]]
 
      [:section
       [:h1 "lets code..."]
@@ -410,23 +420,17 @@ result = (0.5403124237432848, -0.7403124237432849)
         "A Precise meaning or significance."]
        [:br]
        [:ul
-        [:li.fragment.appear "Values never change"]
+        [:li.fragment.appear "Values never change (immutable)"]
         [:li.fragment.appear "Values can be perceived and compared to other values"]
-        [:li.fragment.appear "Equality and comparability are the basis for logic"]]]
-
-      [:section
-       [:h2 "Values"]
-       [:ul
-        [:li.fragment.appear "Immutible"]
+        [:li.fragment.appear "Equality and comparability are the basis for logic"]
         [:li.fragment.appear "Semantically transparent"
          [:ul
           [:li.fragment.appear "Don't " [:i "need"] " methods"]
           [:li.fragment.appear "I can send you values without code and you are fine"]
           [:li.fragment.appear "they are not operationally defined"]
-          [:li.fragment.appear "There can't be any code overhead that is required to understand meaning, equality or comparability."]]
-         ]
-        [:li.fragment.appear "Can be abstracted (collections)"]]
-       ]
+          [:li.fragment.appear "There can't be any code overhead that is required to understand meaning, equality or comparability."]]]
+        [:li.fragment.appear "Can be abstracted (collections)"]
+        ]]
 
       [:section
        [:h2 "What are values in Python?"]
@@ -455,37 +459,69 @@ result = (0.5403124237432848, -0.7403124237432849)
        [:ul
         [:li.fragment.appear "Immutable collections of values are values"]
         [:li.fragment.appear "All benefits apply in compositions"]]
-       ]
+       [:aside.notes
+        [:p "Composite Objects? Group a number of objects together into another."]
+        [:ul
+         [:li "What properties can you ascertain about the whole?"]
+         [:li "You start again defining the interface for the aggregate"]
+         [:li "even with clone/copy/lock policy for each part"]
+         [:li "Combining them you no longer have a clone/copy/lock policy"]
+         [:li "Need a new operational interface for the aggregate"]
+         [:li "Objects don't compose"]]]]
 
       [:section
        [:h2 "Values can be Freely Shared"]
        [:ul
         [:li.fragment.appear "Sharing is aliasing"]
         [:li.fragment.appear "Safe"]
-        [:li.fragment.appear "Incremental change is cheap (persistent structures)"]]]
+        [:li.fragment.appear "Incremental change is cheap (persistent structures)"]]
+       [:aside.notes
+        [:ul
+         [:li "Objects? Defensive copying. Locking."]]]]
 
       [:section
        [:h2 "Values are Easy to Fabricate"]
        [:ul
         [:li.fragment.appear "Anything can create them easily"]
         [:li.fragment.appear "Easy for tests to create"]
-        [:li.fragment.appear "Easy to dry run or simulate"]]]
+        [:li.fragment.appear "Easy to dry run or simulate"]]
+       [:aside.notes
+        [:ul
+         [:li "Object?"]
+         [:li "You must match or emulate some kind of operational interface"]
+         [:li "Mocks... inside mocks inside mocks"]]]]
 
       [:section
        [:h2 "Values are Reproducible"]
        [:ul
-        [:li.fragment.appear "Stable: operations are reproducible"]
+        [:li.fragment.appear "Stable: operations are reproducible."]
         [:li.fragment.appear "Testing"]
-        [:li.fragment.appear "Debugging: reproduce problems without state"]]]
+        [:li.fragment.appear "Debugging: reproduce problems without state"]]
+       [:aside.notes
+        [:ul
+         [:li "Stable: operations are reproducible means:"]
+         [:li "Same input, same output"]
+         [:li "Objects?"]
+         [:li "Must establish the matching state"]
+         [:li "Must recreate the state when the problem occured"]
+         [:li "Global state problems"]
+         [:li "Call a() then b() when the sun is at its zenith on tuesday"]]]]
 
       [:section
        [:h2 "Values are Language Independent"]
        [:ul
         [:li.fragment.appear "Any language can create values"]
         [:li.fragment.appear "Any language can receive values"]]
-       ]
+       [:aside.notes
+        [:ul
+         [:li "examples: html, json, xml."]
+         [:li "Objects?"]
+         [:li "defined by the language constructs (their methods)"]
+         [:li "completely bound to the language of implementaion"]
+         [:li "to break out need to code interfaces"]
+         [:li "proxies, remotes, SOAP, REST interface generation"]]]]
 
-      [:section
+      #_ [:section
        [:h2 "Values thwart imperativeness"]
        [:ul
         [:li.fragment.appear "Refuse to help you program imperatively"]
@@ -496,6 +532,16 @@ result = (0.5403124237432848, -0.7403124237432849)
        [:ul
         [:li.fragment.appear "Representations of basic values in any language"]
         [:li.fragment.appear "Very small number of basic abstractions (less than 10)"]]
+       [:aside.notes
+        [:ul
+         [:li "less than 10: numbers, strings, booleans, none, vectors, hashmaps, sets"]
+         [:li "Objects? Interface is too specific. Means more and more code. Poor reuse"]
+         [:li "how many large OOP systems can you do with less than 10 classes"]
+         [:li "Every new thing needs a new class. Where's the reuse?"]
+         [:li "Q: If I have a person class, and you have a person class, in their own namespaces, and they both have 'name', 'address' and 'email' what can we do with these two things?"]
+         [:li "A: Nothing! Semantically identical. same names. completely uninteroperable."]
+         [:li "TOO SPECIFIC"]
+         ]]
        ]
 
       [:section
@@ -506,6 +552,15 @@ result = (0.5403124237432848, -0.7403124237432849)
         [:li.fragment.appear "Port it"]
         [:li.fragment.appear "Enqueue it"]
         ]
+       [:aside.notes
+        [:ul
+         [:li "Imagine a system with component parts. What happens if you want to move one out?"]
+         [:li "out of resources?"]
+         [:li "another team"]
+         [:li "another language"]
+         [:li "Objects... you're stuck."]
+         [:li "In the large, we know this. We don't build objects over the wire"]
+         [:li "we throw it all out when we program in the small"]]]
        ]
 
       ]
@@ -519,8 +574,15 @@ result = (0.5403124237432848, -0.7403124237432849)
        [:ul
         [:li.fragment.appear "Reference is all you need to pass"]
         [:li.fragment.appear "Cheap"]
-        [:li.fragment.appear "Safe and worry free"]
-        ]
+        [:li.fragment.appear "Safe and worry free"]]
+       [:aside.notes
+        [:ul
+         [:li "passing a reference to a mutable thing, what information have you conveyed? Only its location"]
+         [:li "Q: Who is the president of the United States at this point in time?"]
+         [:li "A: The pigeon hole over there third from the left."]
+         [:li "Sending information with places is hard."]
+         [:li "Basically need to convert it to a value"]
+         [:li "Values rule over the network. eg HTTP. Imagine an OOP protocol"]]]
        ]
 
       [:section
@@ -528,6 +590,13 @@ result = (0.5403124237432848, -0.7403124237432849)
        [:ul
         [:li.fragment.appear "A reference is perception"]
         [:li.fragment.appear "Snapshots"]]
+       [:aside.notes
+        [:ul
+         [:li "How do you atomically percieve a coherent value of an object with multiple getters?"]
+         [:li "MASSIVE concurrency problem."]
+         [:li "also a single threaded problem."]
+         [:li "Copying. Cloning. Locking. Made over and over and over again."]
+         [:li "basically need to create consistent values"]]]
        ]
 
       [:section
@@ -535,6 +604,9 @@ result = (0.5403124237432848, -0.7403124237432849)
        [:ul
         [:li.fragment.appear "Aliasing is remembering"]
         [:li.fragment.appear "Forgetting is garbage collection"]]
+       [:aside.notes
+        [:ul
+         [:li "Objects? Copy. Deep copy."]]]
        ]
 
       [:section
@@ -542,6 +614,11 @@ result = (0.5403124237432848, -0.7403124237432849)
        [:ul
         [:li.fragment.appear "No need for locks"]
         [:li.fragment.appear "No need for transactions"]]
+       [:aside.notes
+        [:ul
+         [:li "Objects? Locks. Transactions."]
+         [:li "Difficult to get right. Even harder to prove it's right"]
+         [:li "Often wrong: deadlocks, race conditions."]]]
        ]
 
       [:section
@@ -550,13 +627,20 @@ result = (0.5403124237432848, -0.7403124237432849)
         [:li.fragment.appear "Only one copy needed in RAM"]
         [:li.fragment.appear "Memoizable"]
         [:li.fragment.appear "Cachable"]
-        [:li.fragment.appear "Content Delivery Networks"]
         [:li.fragment.appear "Distributable"]
         ]
        ]]
 
      [:section
       [:h1 "lets code..."]
+      ]
+
+     [:section
+      [:h1 "Some useful libraries"]
+      [:ul
+       [:li "Python functools" [:a "Python built in"]]
+       [:li "PyToolz" [:a "toolz.readthedocs.org"]]
+       [:li "Pyrsistent" [:a "pyrsistent.readthedocs.org"]]]
       ]
 
      [:section
@@ -572,7 +656,7 @@ result = (0.5403124237432848, -0.7403124237432849)
       [:blockquote.fragment.appear "You’re taking the words right out of my mouth"
        [:br] "-- " [:a "Guido van Rossum"]]]
 
-     [:section
+     #_ [:section
       [:h2 "The Future"]
       [:blockquote.fragment.appear "I don't know what the default programming language will be in 2020, but I garauntee that immutibility will be the default in that language."
        [:br] "-- Stuart Halloway"]]
@@ -584,30 +668,7 @@ result = (0.5403124237432848, -0.7403124237432849)
       [:br]
       [:blockquote.fragment.appear "We love this idea of objects, like there’s this thing that changes. There’s no river. There’s water there at one point-in-time. And another point-in-time, there’s other water there. River... it’s all in here [points at head]"
        [:br] "-- " [:a "Rich Hickey"]
-       ]
-
-      ]
-
-
-
-
-
-     [:section
-      [:h3 "Functional vs Imperative"]
-      [:table [:thead [:tr [:th "Imperative"] [:th "Functional"]]]
-       [:tbody
-        [:tr [:td "Machine-like"] [:td "Mathematical"]]
-        [:tr [:td "Single thread performance"] [:td "Faster"] [:td "Slower"]]
-        [:tr [:td "Smaller Memory Use"] [:td "Larger Memory use"]]]]
-      ]
-
-
-
-
-
-
-
-     ]
+       ]]]
     ]
 
    [:script {:src "lib/js/head.min.js"}]
