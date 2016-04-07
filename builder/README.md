@@ -1,36 +1,20 @@
 # builder
 
-FIXME: description
+Hiccup syntaxed builder for a reveal.js presentation
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Install leinigen
 
 ## Usage
 
-FIXME: explanation
+Build talk HTML with `lein run`
 
-    $ java -jar builder-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+The point your browser at the file `reveal/reveal.js-3.2.0/presentation.html`
 
 ## License
 
-Copyright © 2015 FIXME
+Copyright © 2015 Crispin Wellington
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
