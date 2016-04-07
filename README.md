@@ -2,7 +2,7 @@
 Functional Python Talk Given At Perth Djangonauts Meetup 7th April, 2016.
 
 # Talk Slides
-[The Slides](http://retrogradeorbit.github.io/functional-python)
+[The Slides](https://retrogradeorbit.github.io/functional-python)
 
 Clojure project to build the slides HTML is in the folder `builder`.
 
