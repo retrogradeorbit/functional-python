@@ -1,5 +1,5 @@
 # functional-python
-Functional Python Talk Given At Perth Djangonauts Meetup
+Functional Python Talk Given At Perth Djangonauts Meetup 7th April, 2016.
 
 # Talk Slides
 [The Slides](http://retrogradeorbit.github.io/functional-python)
